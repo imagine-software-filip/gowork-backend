@@ -28,6 +28,9 @@ jobs:
     - name: Lint with Flake8
       run: |
         flake8 .
+    - name: Migrations
+      run: |
+        python manage.py migrate --noinput
     - name: Run Tests
       run: |
         python backend/manage.py test core
