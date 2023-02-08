@@ -30,7 +30,7 @@ jobs:
         flake8 .
     - name: Migrations
       run: |
-        python backend/smanage.py migrate --noinput
+        python backend/manage.py migrate --noinput
     - name: Run Tests
       run: |
         python backend/manage.py test core
