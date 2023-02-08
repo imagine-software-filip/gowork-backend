@@ -10,4 +10,4 @@ class PublicUserApiTests(TestCase):
         x = 2
         y = 2
 
-        self.assertEqual((x + y), 2)
+        self.assertEqual((x + y), 4)
