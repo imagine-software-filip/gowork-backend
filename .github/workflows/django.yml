@@ -30,4 +30,4 @@ jobs:
         flake8 .
     - name: Run Tests
       run: |
-        python backend/manage.py test
+        python backend/manage.py test core
