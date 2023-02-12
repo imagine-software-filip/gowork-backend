@@ -2,11 +2,15 @@
 
 This project is using Python, Django, Django Rest Framework, and graphene
  - git clone [the link of the project/branch]
- - create a new python virtualenv 
+ - Create a new python virtualenv 
     * virtualenv env
     * [linux/mac] source venv/bin/activate
     * [windows] venv\Scripts\activate
     * pip install -r requirements.txt
+ - After you instal the req in the venv open the directory that has the manage.py file
+ - [terminal] python manage.py makemigrations (db)
+ - [terminal] python manage.py migrate (db)
+ - [terminal] python manage.py runserver
 
 ## How to get involved
 
