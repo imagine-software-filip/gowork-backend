@@ -1,5 +1,5 @@
 from django.db import models
-
+from common.models import AbstractBaseModel
 
 class DummyModel(models.Model):
     """Dummy Model to test GraphQL"""
@@ -9,3 +9,6 @@ class DummyModel(models.Model):
 
     def __str__(self):
         return self.name
+
+class User(AbstractBaseModel):
+    pass
