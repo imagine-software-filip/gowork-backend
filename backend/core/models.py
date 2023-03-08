@@ -1,5 +1,5 @@
 from django.db import models
-from datetime import date 
+from datetime import date
 from common.models import AbstractBaseModel
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, \
                                         PermissionsMixin
@@ -23,7 +23,7 @@ class UserManager(BaseUserManager):
         user.is_staff = True
         user.is_superuser = True
         user.save(using=self._db)
-    
+
         return user
 
 
