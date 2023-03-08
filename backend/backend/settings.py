@@ -30,10 +30,10 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 DEBUG = os.environ.get("DEBUG")
 
 ALLOWED_HOSTS = [
-    "https://is-gowork.herokuapp.com/",
-    "is-gowork.herokuapp.com/",
     "*",
     "http://localhost:3000/",
+    'https://is-gowork.netlify.app/',
+    "https://is-gowork.herokuapp.com/",
 ]
 
 
@@ -110,20 +110,16 @@ DATABASES = {
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.\
-            password_validation.UserAttributeSimilarityValidator',
+        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
     },
     {
-        'NAME': 'django.contrib.auth.\
-            password_validation.MinimumLengthValidator',
+        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
     },
     {
-        'NAME': 'django.contrib.auth.\
-            password_validation.CommonPasswordValidator',
+        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
     },
     {
-        'NAME': 'django.contrib.auth.\
-            password_validation.NumericPasswordValidator',
+        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
 
@@ -170,5 +166,12 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Global Variables
 DATE_INPUT_FORMATS = ['%Y-%m-%d']
+AUTH_USER_MODEL = 'core.User'
 
 django_heroku.settings(locals())
+
+
+try:
+    from backend.local_settings import *
+except:
+    pass
