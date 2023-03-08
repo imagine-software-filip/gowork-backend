@@ -13,7 +13,6 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 import os
 from pathlib import Path
 from datetime import timedelta
-import dj_database_url
 import django_heroku
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -169,9 +168,3 @@ DATE_INPUT_FORMATS = ['%Y-%m-%d']
 AUTH_USER_MODEL = 'core.User'
 
 django_heroku.settings(locals())
-
-
-try:
-    from backend.local_settings import *
-except:
-    pass
