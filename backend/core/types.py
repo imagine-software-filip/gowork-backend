@@ -1,8 +1,10 @@
 from graphene_django.types import DjangoObjectType
-from .models import DummyModel
+from django.contrib.auth import get_user_model
 
+User = get_user_model()
 
-class DummyType(DjangoObjectType):
+class UserType(DjangoObjectType):
+    """UserType for GraphQL"""
     class Meta:
-        model = DummyModel
-        fields = ("id", "name", "level", "date")
+        model = User
+        exclude = ('password',)
