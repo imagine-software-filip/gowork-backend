@@ -30,6 +30,7 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 DEBUG = os.environ.get("DEBUG")
 
 ALLOWED_HOSTS = [
+    "https://is-gowork.herokuapp.com/",
     "*",
     "http://localhost:3000/",
 ]
