@@ -5,7 +5,7 @@ from .types import UserType
 User = get_user_model()
 
 class UserCreate(Mutation):
-    """Mutatiomn to register user"""
+    """Mutation to register user"""
     user = Field(UserType)
 
     class Arguments:
@@ -20,6 +20,3 @@ class UserCreate(Mutation):
         user.save()
 
         return UserCreate(user=user)
-
-
-# https://michaelstromer.nyc/books/intro-to-django/django-authentication

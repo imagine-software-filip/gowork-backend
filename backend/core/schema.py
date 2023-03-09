@@ -1,21 +1,31 @@
-import graphene
-from .models import DummyModel
-from .types import DummyType
+from graphene import Field, List, ObjectType, Schema
+from .types import UserType
+from .mutations import UserCreate
+from django.contrib.auth import get_user_model
+from graphql_jwt.decorators import login_required
+from graphql_jwt import ObtainJSONWebToken, Verify, Refresh
+
+User = get_user_model()
 
 
-class Query(graphene.ObjectType):
-    all_dummies = graphene.List(DummyType)
-    dummy_by_name = graphene.\
-        Field(DummyType, name=graphene.String(required=True))
+class Query(ObjectType):
+    current_user = Field(UserType)
+    users = List(UserType)
 
-    def resolve_all_dummies(root, info):
-        return DummyModel.objects.all()
+    # @login_required
+    def resolve_users(root, info):
+        return User.objects.all()
 
-    def resolve_dummy_by_name(root, info, name):
-        try:
-            return DummyModel.objects.get(name=name)
-        except DummyModel.DoesNotExist:
-            return None
+    # @login_required
+    def resolve_current_user(root, info):
+        user = info.context.user
+        return user
+    
 
+class Mutation(ObjectType):
+    user_create = UserCreate.Field()
+    token_auth = ObtainJSONWebToken.Field()
+    verify_token = Verify.Field()
+    refresh_token = Refresh.Field()
 
-schema = graphene.Schema(query=Query)
+schema = Schema(query=Query, mutation=Mutation)
