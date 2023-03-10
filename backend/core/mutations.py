@@ -1,7 +1,7 @@
-from graphene import Field, Mutation, String, Date
+from graphene import Field, Mutation, String
 from django.contrib.auth import get_user_model
 from .types import UserType
-from graphene_file_upload.scalars import Upload
+
 User = get_user_model()
 
 
@@ -12,25 +12,10 @@ class UserCreate(Mutation):
     class Arguments:
         email = String(required=True)
         password = String(required=True)
-        first_name = String(required = True)
-        last_name = String(required = True)
-        dob = Date(required = True)
-        phone_number = String(required = True, max = 15)
-        heading = String(required = True, max = 255)
-        desc = String(required = True)
-        image = Upload()
 
-    def mutate(self, info, email, password, first_name, last_name, dob, phone_number, heading, desc, image):
+    def mutate(self, info, email, password):
         user = User(
             email=email,
-            first_name = first_name, 
-            last_name = last_name,
-            dob = dob,
-            phone_number = phone_number,
-            heading = heading,
-            desc = desc,
-            image = image
-
         )
         user.set_password(password)
         user.save()
