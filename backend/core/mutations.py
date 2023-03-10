@@ -15,8 +15,8 @@ class UserCreate(Mutation):
         password = String(required=True)
         first_name = String(required = True)
         last_name = String(required = True)
-        phone_number = String(required = True, max = 15)
-        heading = String(required = True, max = 255)
+        phone_number = String(required = True)
+        heading = String(required = True)
         desc = String(required = True)
 
     def mutate(self, info, email, password, first_name, last_name, phone_number, heading, desc):

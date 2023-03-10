@@ -1,9 +1,10 @@
 from graphene import Field, List, ObjectType, Schema, String
-from .types import UserType
+from .types import UserType, JobType
 from .mutations import UserCreate, VerifyUser
 from django.contrib.auth import get_user_model
 from graphql_jwt.decorators import login_required
 from graphql_jwt import ObtainJSONWebToken, Verify, Refresh
+from core.models import Job
 
 User = get_user_model()
 
@@ -11,6 +12,7 @@ User = get_user_model()
 class Query(ObjectType):
     current_user = Field(UserType, token=String(required=True))
     users = List(UserType, token=String(required=True))
+    jobs = List(JobType, token=String(required=True))
 
     @login_required
     def resolve_users(root, info, **kwargs):
@@ -20,6 +22,10 @@ class Query(ObjectType):
     def resolve_current_user(root, info, **kwargs):
         user = info.context.user
         return user
+    
+    @login_required
+    def resolve_jobs(root, info, **kwargs):
+        return Job.objects.all()
     
 
 class Mutation(ObjectType):
