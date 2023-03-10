@@ -18,9 +18,8 @@ class UserCreate(Mutation):
         phone_number = String(required = True, max = 15)
         heading = String(required = True, max = 255)
         desc = String(required = True)
-        image = Upload()
 
-    def mutate(self, info, email, password, first_name, last_name, dob, phone_number, heading, desc, image):
+    def mutate(self, info, email, password, first_name, last_name, dob, phone_number, heading, desc):
         user = User(
             email=email,
             first_name = first_name, 
@@ -29,7 +28,6 @@ class UserCreate(Mutation):
             phone_number = phone_number,
             heading = heading,
             desc = desc,
-            image = image
 
         )
         user.set_password(password)
