@@ -4,6 +4,7 @@ from .types import UserType
 
 User = get_user_model()
 
+
 class UserCreate(Mutation):
     """Mutation to register user"""
     user = Field(UserType)

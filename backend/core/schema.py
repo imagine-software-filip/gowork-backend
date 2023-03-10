@@ -1,4 +1,4 @@
-from graphene import Field, List, ObjectType, Schema
+from graphene import Field, List, ObjectType, Schema, String
 from .types import UserType
 from .mutations import UserCreate
 from django.contrib.auth import get_user_model
@@ -9,15 +9,15 @@ User = get_user_model()
 
 
 class Query(ObjectType):
-    current_user = Field(UserType)
-    users = List(UserType)
+    current_user = Field(UserType, token=String(required=True))
+    users = List(UserType, token=String(required=True))
 
     # @login_required
-    def resolve_users(root, info):
-        return User.objects.all()
+    # def resolve_users(root, info, **kwargs):
+    #     return User.objects.all()
 
-    # @login_required
-    def resolve_current_user(root, info):
+    @login_required
+    def resolve_current_user(root, info, **kwargs):
         user = info.context.user
         return user
     
