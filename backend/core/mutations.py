@@ -13,15 +13,24 @@ class UserCreate(Mutation):
     class Arguments:
         email = String(required=True)
         password = String(required=True)
+        anhdao_first_mutation
+        first_name = String(required = True)
+        last_name = String(required = True)
+        dob = Date(required = True)
+        phone_number = String(required = True, max = 15)
+        heading = String(required = True, max = 255)
+        desc = String(required = True)
 
-    def mutate(self, info, email, password):
+    def mutate(self, info, email, password, first_name, last_name, dob, phone_number, heading, desc):
         user = User(
             email=email,
-        )
-        user.set_password(password)
-        user.save()
+            first_name = first_name, 
+            last_name = last_name,
+            dob = dob,
+            phone_number = phone_number,
+            heading = heading,
+            desc = desc,
 
-        return UserCreate(user=user)
     
 
 class VerifyUser(Mutation):
