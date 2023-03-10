@@ -32,7 +32,7 @@ class User(AbstractBaseUser, PermissionsMixin, AbstractBaseModel):
     email = models.EmailField(max_length=255, unique=True)
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
-    dob = models.DateField(default=date.today())
+    dob = models.DateField(null=True)
     phone_number = models.CharField(max_length=15)
     heading = models.CharField(max_length=255, default="")
     desc = models.TextField(default="")
