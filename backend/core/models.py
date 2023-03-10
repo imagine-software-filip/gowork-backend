@@ -27,13 +27,13 @@ class UserManager(BaseUserManager):
         return user
 
 
-class User(AbstractBaseUser, PermissionsMixin):
+class User(AbstractBaseUser, PermissionsMixin, AbstractBaseModel):
     """Custom User model that supports using email instead of username"""
     email = models.EmailField(max_length=255, unique=True)
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
     dob = models.DateField(default=date.today())
-    phone_number = models.CharField(max_length=15, unique=True)
+    phone_number = models.CharField(max_length=15)
     heading = models.CharField(max_length=255, default="")
     desc = models.TextField(default="")
     image = models.ImageField(null=True, upload_to='')
