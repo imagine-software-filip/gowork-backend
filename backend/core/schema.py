@@ -1,10 +1,10 @@
 from graphene import Field, List, ObjectType, Schema, String
-from .types import UserType, JobType, FreelancingServiceType
+from .types import UserType, JobType, FreelancingServiceType, CategoricalServiceType
 from .mutations import UserCreate, VerifyUser
 from django.contrib.auth import get_user_model
 from graphql_jwt.decorators import login_required
 from graphql_jwt import ObtainJSONWebToken, Verify, Refresh
-from core.models import Job, Freelancing, FreelancingService
+from core.models import Job, Freelancing, FreelancingService, CategoryService
 
 User = get_user_model()
 
@@ -15,6 +15,7 @@ class Query(ObjectType):
     user = List(UserType, token=String(required=True), user_pk=String(required=True))
     jobs = List(JobType, token=String(required=True))
     freelancing = List(FreelancingServiceType, token=String(required=True), user_pk=String(required=True))
+    categorical_service = List(CategoricalServiceType, token=String(required=True))
 
     @login_required
     def resolve_users(root, info, **kwargs):
@@ -47,6 +48,10 @@ class Query(ObjectType):
         freelancingservice = FreelancingService.objects.filter(freelancing=freelancing)
         return freelancingservice
 
+    @login_required
+    def resolve_categorical_service_type(root, info, **kwargs):
+        return CategoryService.objects.all()
+    
 
 class Mutation(ObjectType):
     user_create = UserCreate.Field()
