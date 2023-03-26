@@ -1,6 +1,6 @@
 from graphene_django.types import DjangoObjectType
 from django.contrib.auth import get_user_model
-from core.models import Job
+from core.models import Job, Freelancing, FreelancingService
 
 User = get_user_model()
 
@@ -15,3 +15,15 @@ class JobType(DjangoObjectType):
     """JobType"""
     class Meta:
         model = Job
+
+
+class FreelancingType(DjangoObjectType):
+    """FreelancingType"""
+    class Meta:
+        model = Freelancing
+
+
+class FreelancingServiceType(DjangoObjectType):
+    """FreelansingService"""
+    class Meta:
+        model = FreelancingService
