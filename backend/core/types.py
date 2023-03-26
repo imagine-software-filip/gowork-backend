@@ -28,9 +28,8 @@ class FreelancingServiceType(DjangoObjectType):
     class Meta:
         model = FreelancingService
 
-class CategoricalServiceType(DjangoObjectType):
+class CategoryServiceType(DjangoObjectType):
     """CategoricalServiceType"""
-
     class Meta:
-        model = CategoryService
+        model =  CategoryService
 
