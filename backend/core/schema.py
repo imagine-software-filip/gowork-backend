@@ -1,5 +1,5 @@
 from graphene import Field, List, ObjectType, Schema, String
-from .types import UserType, JobType, FreelancingServiceType, CategoricalServiceType
+from .types import UserType, JobType, FreelancingServiceType, CategoryServiceType, FreelancingType
 from .mutations import UserCreate, VerifyUser
 from django.contrib.auth import get_user_model
 from graphql_jwt.decorators import login_required
@@ -14,8 +14,9 @@ class Query(ObjectType):
     users = List(UserType, token=String(required=True))
     user = List(UserType, token=String(required=True), user_pk=String(required=True))
     jobs = List(JobType, token=String(required=True))
-    freelancing = List(FreelancingServiceType, token=String(required=True), user_pk=String(required=True))
-    categorical_service = List(CategoricalServiceType, token=String(required=True))
+    freelancing = List(FreelancingType, token=String(required=True))
+    freelancing_services = List(FreelancingServiceType, token=String(required=True), user_pk=String(required=True))
+    category = List(CategoryServiceType, token=String(required=True))
 
     @login_required
     def resolve_users(root, info, **kwargs):
@@ -42,14 +43,14 @@ class Query(ObjectType):
         return freelancing
     
     @login_required
-    def resolve_freelancingservice(root, info, user_pk, **kwargs):
+    def resolve_freelancing_services(root, info, user_pk, **kwargs):
         user = User.objects.get(pk=user_pk)
         freelancing = Freelancing.objects.get(user=user)
         freelancingservice = FreelancingService.objects.filter(freelancing=freelancing)
         return freelancingservice
 
     @login_required
-    def resolve_categorical_service_type(root, info, **kwargs):
+    def resolve_category(root, info, **kwargs):
         return CategoryService.objects.all()
     
 
