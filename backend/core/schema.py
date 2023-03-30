@@ -14,8 +14,10 @@ class Query(ObjectType):
     users = List(UserType, token=String(required=True))
     user = List(UserType, token=String(required=True), user_pk=String(required=True))
     jobs = List(JobType, token=String(required=True))
+    job = Field(JobType, token=String(required=True), job_id=String(required=True))
     freelancing = List(FreelancingType, token=String(required=True))
     freelancing_services = List(FreelancingServiceType, token=String(required=True), user_pk=String(required=True))
+    one_freelancing = Field(Freelancing, token=String(required=True), freelancing_id=String(required=True))
     category = List(CategoryServiceType, token=String(required=True))
 
     @login_required
@@ -33,6 +35,10 @@ class Query(ObjectType):
         return Job.objects.all()
     
     @login_required
+    def resolve_job(root, info, job_id, **kwargs):
+        return Job.objects.get(pk=job_id)
+    
+    @login_required
     def resolve_user(root, info, user_pk ,**kwargs):
         user = User.objects.get(pk=user_pk)
         return user
@@ -41,6 +47,10 @@ class Query(ObjectType):
     def resolve_freelancing(root, info, **kwargs):
         freelancing = Freelancing.objects.all()
         return freelancing
+    
+    @login_required
+    def resolve_one_freelancing(root, info, freelancing_id, **kwargs):
+        return Freelancing.objects.get(pk=freelancing_id)
     
     @login_required
     def resolve_freelancing_services(root, info, user_pk, **kwargs):
