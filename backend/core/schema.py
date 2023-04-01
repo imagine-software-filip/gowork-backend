@@ -17,7 +17,7 @@ class Query(ObjectType):
     job = Field(JobType, token=String(required=True), job_id=String(required=True))
     freelancing = List(FreelancingType, token=String(required=True))
     freelancing_services = List(FreelancingServiceType, token=String(required=True), user_pk=String(required=True))
-    one_freelancing = Field(Freelancing, token=String(required=True), freelancing_id=String(required=True))
+    one_freelancing = Field(FreelancingType, token=String(required=True), freelancing_id=String(required=True))
     category = List(CategoryServiceType, token=String(required=True))
 
     @login_required
