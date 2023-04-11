@@ -1,10 +1,10 @@
 from graphene import Field, List, ObjectType, Schema, String
-from .types import UserType, JobType, FreelancingServiceType, CategoryServiceType, FreelancingType
-from .mutations import UserCreate, VerifyUser
+from .types import UserType, JobType, FreelancingServiceType, CategoryServiceType, FreelancingType, OfferType, ResolvedServiceType
+from .mutations import UserCreate, VerifyUser, SendOffer, ChangeOfferStatus, FinishServiceByProvider, RateService, ForgotPasswordGenToken, ForgotPasswordSetNew
 from django.contrib.auth import get_user_model
 from graphql_jwt.decorators import login_required
 from graphql_jwt import ObtainJSONWebToken, Verify, Refresh
-from core.models import Job, Freelancing, FreelancingService, CategoryService
+from core.models import Job, Freelancing, FreelancingService, CategoryService, Offer, ResolvedService
 
 User = get_user_model()
 
@@ -19,6 +19,11 @@ class Query(ObjectType):
     freelancing_services = List(FreelancingServiceType, token=String(required=True), user_pk=String(required=True))
     one_freelancing = Field(FreelancingType, token=String(required=True), freelancing_id=String(required=True))
     category = List(CategoryServiceType, token=String(required=True))
+    # Scheduling
+    requestor_offers = List(OfferType, token=String(required=True), user_pk=String(required=True))
+    providor_offers = List(OfferType, token=String(required=True), user_pk=String(required=True))
+    accepted_offers = List(OfferType, token=String(required=True), user_pk=String(required=True))
+    ready_to_rate_services = List(ResolvedServiceType, token=String(required=True), user_pk=String(required=True))
 
     @login_required
     def resolve_users(root, info, **kwargs):
@@ -63,10 +68,40 @@ class Query(ObjectType):
     def resolve_category(root, info, **kwargs):
         return CategoryService.objects.all()
     
+    # Scheduling
+    @login_required
+    def resolve_requestor_offers(root, info, user_pk, **kwargs):
+        user = User.objects.get(pk=user_pk)
+        return Offer.objects.filter(requester=user)
+    
+    @login_required
+    def resolve_providor_offers(root, info, user_pk, **kwargs):
+        user = User.objects.get(pk=user_pk)
+        return Offer.objects.filter(provider=user)
+    
+    @login_required
+    def resolve_accepted_offers(root, info, user_pk, **kwargs):
+        user = User.objects.get(pk=user_pk)
+        return Offer.objects.filter(provider=user, status="Accepted")
+    
+    @login_required
+    def resolve_ready_to_rate_services(root, info, user_pk, **kwargs):
+        user = User.objects.get(pk=user_pk)
+        offer = Offer.objects.get(requester=user)
+        return ResolvedService.objects.filter(offer=offer, job_done=True)
+    
 
 class Mutation(ObjectType):
     user_create = UserCreate.Field()
     verify_user = VerifyUser.Field()
+    forgot_password_gen_token = ForgotPasswordGenToken.Field()
+    forgot_password_set_new = ForgotPasswordSetNew.Field()
+
+    send_offer = SendOffer.Field()
+    change_offer_status = ChangeOfferStatus.Field()
+    finish_service_by_provider = FinishServiceByProvider.Field()
+    rate_service = RateService.Field()
+    
     token_auth = ObtainJSONWebToken.Field()
     verify_token = Verify.Field()
     refresh_token = Refresh.Field()
